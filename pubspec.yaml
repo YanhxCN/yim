@@ -25,6 +25,7 @@ dependencies:
   path_provider: ^1.6.5
   image_picker: ^0.6.4
   cached_network_image: ^2.0.0
+  dnetty: ^0.0.2
 
 dev_dependencies:
   flutter_test:

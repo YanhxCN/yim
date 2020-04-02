@@ -1,13 +1,10 @@
-import 'dart:ffi';
 import 'dart:io';
 
-import 'package:fixnum/fixnum.dart';
+import 'package:dnetty/dnetty.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:video_player/video_player.dart';
-import 'package:yim/im/protobuf/msg.pb.dart';
-import 'package:yim/im/socket_client.dart';
 import 'package:yim/model/message.dart';
 import 'package:yim/model/user.dart';
 import 'package:yim/utils/DateUtil.dart';
@@ -34,6 +31,9 @@ class PersonalChat extends StatefulWidget {
 }
 
 class _PersonalChatState extends State<PersonalChat> {
+
+  EventBus bus;
+
   // 初始化一个FocusNode控件
   FocusNode _focusNode = FocusNode();
   final TextEditingController _textController = TextEditingController();
@@ -105,15 +105,15 @@ class _PersonalChatState extends State<PersonalChat> {
     //发送到服务器
     Msg msg = Msg();
     Head head = Head();
-    head.msgId = '1111111';
-    head.msgType = 1;
-    head.msgContentType = 1;
-    head.fromId = '11';
-    head.toId = '22';
-    head.timestamp = Int64(111111111);
+    head.msgId = UUID.build();
+    head.msgType = MsgType.PERSONAL;
+    head.msgContentType = MsgContentType.TEXT;
+    head.fromId = widget.fromUser.id.toString();
+    head.toId = widget.toUser.id.toString();
+    head.timestamp = Timestamp.build();
     msg.head = head;
     msg.body = text;
-    SocketClient().sendMsg(msg);
+    SocketClient.sendMsg(msg);
   }
 
   /// 发送图片消息
@@ -149,10 +149,11 @@ class _PersonalChatState extends State<PersonalChat> {
         messageId: DateTime.now().millisecondsSinceEpoch.toString(),
         duration: duration.ceil(),
         ioType: MessageIOType.messageIOTypeOut,
-        messageType: MessageType.audio);
+        messageType: MessageType.audio
+    );
     setState(() {
       _messages.add(message);
-    });
+     });
 
     _scrollToBottom();
 
@@ -185,6 +186,25 @@ class _PersonalChatState extends State<PersonalChat> {
     //发送到服务器
 
     controller.dispose();
+  }
+
+
+  @override
+  void initState() {
+    bus = new EventBus();
+    bus.on(MsgType.PERSONAL,(arg) {
+      Msg msg = arg;
+      Message message = Message(
+          fromUser: widget.fromUser,
+          toUser: widget.toUser,
+          text: msg.body,
+          ioType: MessageIOType.messageIOTypeIn,
+          messageType: MessageType.text
+      );
+      setState(() {
+        _messages.add(message);
+      });
+    });
   }
 
   @override

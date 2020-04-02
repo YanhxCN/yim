@@ -183,6 +183,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.0.9"
+  dnetty:
+    dependency: "direct main"
+    description:
+      path: "/Users/hoin/FlutterProjects/dnetty"
+      relative: false
+    source: path
+    version: "0.0.1"
   fixnum:
     dependency: transitive
     description:

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:yim/chat/personal_chat.dart';
-import 'package:yim/im/socket_client.dart';
 import 'package:yim/personal/personal_info.dart';
 import 'package:yim/personal/personal.dart';
 
@@ -29,7 +28,7 @@ class MyApp extends StatelessWidget {
     fromUser.login = 'user1';
     fromUser.avatar_url = 'http://www.17qq.com/img_qqtouxiang/84602511.jpeg';
     User toUser = User();
-    toUser.id = 222;
+    toUser.id = 111;
     toUser.login = 'user2';
     toUser.avatar_url = 'http://pic2.zhimg.com/50/v2-0e944ad4ae60f225ac166a074ed8b985_hd.jpg';
 

@@ -1,8 +1,8 @@
 
 import 'dart:convert';
 
+import 'package:dnetty/dnetty.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:yim/im/socket_client.dart';
 import 'package:yim/model/profile.dart';
 
 import 'git_api.dart';
@@ -26,7 +26,7 @@ class Global {
     // 初始化网络请求相关配置
     Git.init();
     // 初始化SocketClient
-    //SocketClient.instance;
+    SocketClient.instance.startClient("192.168.31.235", 5555, profile.user.id.toString(), "token_" + profile.user.id.toString());
   }
 
   // 持久化Profile信息
